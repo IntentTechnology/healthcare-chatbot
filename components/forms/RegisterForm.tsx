@@ -12,6 +12,7 @@ import {
   CardContent,
   CardFooter,
 } from "../ui/card";
+import PasswordValidation from "../PasswordValidation";
 
 interface RegisterFormProps {
   form: number;
@@ -27,7 +28,15 @@ interface RegisterFormProps {
   setConfirmPassword: React.Dispatch<React.SetStateAction<string>>;
   isLoading?: boolean;
   otpSent?: boolean;
-  error?: string;
+  error?:
+    | {
+        message: string;
+        name: string;
+        password: string;
+        confirmPassword: string;
+        email: string;
+      }
+    | undefined;
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({
@@ -64,6 +73,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
+              {error?.email && (
+                <p className="text-red-500 text-xs mt-2">{error?.email}</p>
+              )}
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Name</Label>
@@ -73,17 +85,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                 onChange={(e) => setName(e.target.value)}
                 required
               />
+              {error?.name && (
+                <p className="text-red-500 text-xs mt-2">{error?.name}</p>
+              )}
             </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
+            <PasswordValidation setPassword={setPassword} password={password} />
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
               <Input
@@ -93,6 +99,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
+              {error?.password && (
+                <p className="text-red-500 text-xs mt-2">{error?.password}</p>
+              )}
             </div>
             {/* <div className="flex flex-col space-y-1.5">
             <Label htmlFor="otp">OTP</Label>
@@ -114,13 +123,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         <CardFooter className="flex flex-col items-center">
           <Button
             className="w-full flex gap-5 rounded-full  hover:bg-[#7DBCCE] hover:text-[#5D6D84] bg-[#7DBCCE] text-white"
-           
-              onClick={handleSubmit}
-            //   disabled={isLoading || !otpSent}
+            onClick={handleSubmit}
+            disabled={!email || !password || !name || !confirmPassword}
           >
             {isLoading ? "Registering..." : "REGISTER NOW "}
           </Button>
-          {error && <p className="text-red-500 mt-2">{error}</p>}
+
           <p className="mt-4">
             Already have an account?{" "}
             <Link href="/" className="text-[#65aabd] hover:underline">

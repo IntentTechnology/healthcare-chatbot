@@ -17,7 +17,14 @@ interface OtpFormProps {
   email: string;
   otp: string;
   setOtp: (otp: string) => void;
-  error?: string;
+  error?: {
+        message: string;
+        name: string;
+        password: string;
+        confirmPassword: string;
+        email: string;
+      }
+    | undefined;
   handleSubmit: (e: React.FormEvent) => void;
   isLoading: boolean;
 }
@@ -46,7 +53,6 @@ const OtpForm: React.FC<OtpFormProps> = ({
               <div className="flex space-x-2">
                 <Input
                   id="otp"
-                  
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                   required
@@ -72,7 +78,7 @@ const OtpForm: React.FC<OtpFormProps> = ({
         >
           {isLoading ? "Sending Otp" : "Verify"}
         </Button>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
+        {error?.message && <p className="text-red-500 mt-2">{error?.message}</p>}
         {/* <p className="mt-4">
           Already have an account?{" "}
           <Link href="/" className="text-[#65aabd] hover:underline">

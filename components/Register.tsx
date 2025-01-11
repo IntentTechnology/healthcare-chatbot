@@ -24,15 +24,42 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [otp, setOtp] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState({
+    message: "",
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    otp: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const router = useRouter();
 
   const handleSendOtp = async () => {
-    setError("");
+    setError({
+      message: "",
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      otp: "",
+    });
     setIsLoading(true);
-
+ 
+    if (password !== confirmPassword) {
+      // setError("Passwords do not match");
+      setError({
+        message: "",
+        name: "",
+        email: "",
+        password: "Passwords do not match",
+        confirmPassword: "",
+        otp: "",
+      });
+      setIsLoading(false);
+      return;
+    }
     try {
       const response = await fetch(
         "https://smartcare-auth.onrender.com/api/smart_care/signup/send_otp",
@@ -56,11 +83,26 @@ export default function Register() {
         setForm(1);
       } else {
         // Handle registration error
-        setError(data.error?.name || "Registration failed. Please try again.");
+        setError({
+          message: "",
+          name: data.error.name,
+          email: data.error.email,
+          password: data.error.password,
+          confirmPassword: data.error.confirmPassword,
+          otp: "",
+        });
       }
       setOtpSent(true);
     } catch (err) {
-      setError("Failed to send OTP. Please try again.");
+      // setError("Failed to send OTP. Please try again.");
+      setError({
+        message: "Failed to send OTP. Please try again.",
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        otp: "",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -68,14 +110,15 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError({
+      message: "",
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      otp: "",
+    });
     setIsLoading(true);
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      setIsLoading(false);
-      return;
-    }
 
     try {
       const response = await fetch(
@@ -96,7 +139,7 @@ export default function Register() {
       );
 
       const data = await response.json();
-
+      console.log("Registration successful:", data);
       if (response.ok) {
         // Handle successful registration
         console.log("Registration successful:", data);
@@ -104,9 +147,25 @@ export default function Register() {
       } else {
         // Handle registration error
         setError(data.message || "Registration failed. Please try again.");
+        setError({
+          message: data.message,
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          otp: "",
+        })
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      // setError("An error occurred. Please try again.");
+      setError({
+        message: "An error occurred. Please try again.",
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        otp: "",
+      });
     } finally {
       setIsLoading(false);
     }
