@@ -1,38 +1,49 @@
-import Link from 'next/link'
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 
-type RecentChat = {
-  id: string;
-  title: string;
-  preview: string;
-}
+// type RecentChat = {
+//   id: string;
+//   title: string;
+//   preview: string;
+// }
 
-const recentChats: RecentChat[] = [
-  { id: '1', title: 'Diet Advice', preview: 'What are some healthy snack options?' },
-  { id: '2', title: 'Exercise Routine', preview: 'Can you suggest a beginner workout plan?' },
-  { id: '3', title: 'Sleep Improvement', preview: 'How can I improve my sleep quality?' },
-  { id: '4', title: 'Stress Management', preview: 'What are some effective stress relief techniques?' },
-  { id: '5', title: 'Heart Health', preview: 'What are the best foods for heart health?' },
-]
+const suggestedPrompts = [
+  "What are some tips for maintaining a healthy diet?",
+  "How can I improve my sleep quality?",
+  "What exercises are best for cardiovascular health?",
+  "How can I manage stress effectively?",
+];
 
-export function Sidebar() {
+export function Sidebar({ setInput, isLoading, handleSubmit }: any) {
+  const handleSuggestedPrompt = async (prompt: string) => {
+    setInput(prompt);
+    const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
+    await handleSubmit(fakeEvent);
+  };
+
   return (
     <div className="w-64 bg-gray-100 h-screen p-4 hidden md:block">
-      <h2 className="text-lg font-semibold mb-4">Recent Chats</h2>
+      <h2 className="text-lg font-semibold mb-4">Suggested questions:</h2>
       <ScrollArea className="h-[calc(100vh-8rem)]">
-        {recentChats.map((chat) => (
-          <Link href={`/chat/${chat.id}`} key={chat.id}>
-            <Button variant="ghost" className="w-full justify-start mb-2 text-left">
-              <div>
-                <div className="font-medium">{chat.title}</div>
-                <div className="text-sm text-gray-500 truncate">{chat.preview}</div>
-              </div>
-            </Button>
-          </Link>
-        ))}
+        <div className="mb-4">
+          {/* <h3 className="text-sm font-semibold mb-2">Suggested questions:</h3> */}
+          <div className="flex flex-wrap gap-2">
+            {suggestedPrompts.map((prompt, index) => (
+              <Button
+                key={index}
+                variant="outline"
+                size="sm"
+                className="p-10"
+                onClick={() => handleSuggestedPrompt(prompt)}
+                disabled={isLoading}
+              >
+                {prompt}
+              </Button>
+            ))}
+          </div>
+        </div>
       </ScrollArea>
     </div>
-  )
+  );
 }
-

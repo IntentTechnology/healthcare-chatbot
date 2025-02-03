@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,48 +12,43 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Menu } from 'lucide-react'
+} from "@/components/ui/dropdown-menu";
+import { Menu } from "lucide-react";
+import Logo from "./logo";
 
 export default function Navigation() {
-  const router = useRouter()
-  const [userName, setUserName] = useState('')
+  const router = useRouter();
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    const storedName = localStorage.getItem('userName')
+    const storedName = localStorage.getItem("userName");
     if (storedName) {
-      setUserName(storedName)
+      setUserName(storedName);
     }
-  }, [])
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('userName')
-    router.push('/')
-  }
+    localStorage.removeItem("token");
+    localStorage.removeItem("userName");
+    router.push("/login");
+  };
 
   const getInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase()
-  }
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase();
+  };
 
   return (
     <nav className="bg-white shadow">
-      <div className="container mx-auto px-6 py-3">
+      <div className="container mx-auto px-6 md:px-0 py-3">
         <div className="flex justify-between items-center">
           <Link href="/dashboard" className="text-xl font-bold text-gray-800">
-            HealthCare Chatbot
+           <Logo width={40} height={40}/>
           </Link>
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" asChild>
-              <Link href="/dashboard">Chatbot</Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link href="/health-dashboard">Health Dashboard</Link>
-            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
@@ -64,15 +59,12 @@ export default function Navigation() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>{userName}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard" className="text-primary">Chatbot</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/health-dashboard" className="text-primary">Health Dashboard</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/profile" className="text-primary">Profile</Link>
-                </DropdownMenuItem>
+
+                {/* <DropdownMenuItem asChild>
+                  <Link href="/profile" className="text-primary">
+                    Profile
+                  </Link>
+                </DropdownMenuItem> */}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={handleLogout}>
                   Logout
@@ -90,16 +82,7 @@ export default function Navigation() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>{userName}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard" className="text-primary">Chatbot</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/health-dashboard" className="text-primary">Health Dashboard</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/profile" className="text-primary">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
+
                 <DropdownMenuItem onSelect={handleLogout}>
                   Logout
                 </DropdownMenuItem>
@@ -109,6 +92,5 @@ export default function Navigation() {
         </div>
       </div>
     </nav>
-  )
+  );
 }
-

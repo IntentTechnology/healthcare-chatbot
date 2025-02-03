@@ -131,7 +131,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 
           <p className="mt-4">
             Already have an account?{" "}
-            <Link href="/" className="text-[#65aabd] hover:underline">
+            <Link href="/login" className="text-[#65aabd] hover:underline">
               Login
             </Link>
           </p>

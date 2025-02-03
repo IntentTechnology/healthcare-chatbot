@@ -12,12 +12,14 @@ import {
   CardContent,
   CardFooter,
 } from "../ui/card";
+import FullPageLoader from "../FullPageLoader";
 
 interface OtpFormProps {
   email: string;
   otp: string;
   setOtp: (otp: string) => void;
-  error?: {
+  error?:
+    | {
         message: string;
         name: string;
         password: string;
@@ -52,6 +54,7 @@ const OtpForm: React.FC<OtpFormProps> = ({
               <Label htmlFor="otp">OTP</Label>
               <div className="flex space-x-2">
                 <Input
+                  disabled={isLoading}
                   id="otp"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
@@ -78,7 +81,9 @@ const OtpForm: React.FC<OtpFormProps> = ({
         >
           {isLoading ? "Sending Otp" : "Verify"}
         </Button>
-        {error?.message && <p className="text-red-500 mt-2">{error?.message}</p>}
+        {error?.message && (
+          <p className="text-red-500 mt-2">{error?.message}</p>
+        )}
         {/* <p className="mt-4">
           Already have an account?{" "}
           <Link href="/" className="text-[#65aabd] hover:underline">

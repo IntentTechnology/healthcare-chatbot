@@ -52,15 +52,27 @@ export default function Login() {
         // Store the token in localStorage
         localStorage.setItem("token", data.data.token);
         localStorage.setItem("userName", data.data.name);
+        localStorage.setItem("credentials", JSON.stringify(data));
         console.log("Login successful:", data);
         router.push("/dashboard");
+        return toast({
+          title: data.message,
+          description: data?.message,
+          variant: "default",
+        });
       } else {
         // Handle login error
-        setError(data.message || "Login failed. Please try again.");
+        setError(
+          (data.errors.password && data.errors.password) ||
+            (data.errors.email && data.errors.email) ||
+            "Login failed. Please try again."
+        );
 
         return toast({
           title: data.message,
-          description: data?.error,
+          description:
+            (data.errors.password && data.errors.password) ||
+            (data.errors.email && data.errors.email),
           variant: "destructive",
         });
       }
