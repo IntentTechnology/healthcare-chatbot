@@ -61,13 +61,7 @@ const OtpForm: React.FC<OtpFormProps> = ({
                   required
                   //   disabled={!otpSent}
                 />
-                {/* <Button
-                  type="button"
-                  onClick={handleSendOtp}
-                  disabled={isLoading || otpSent}
-                >
-                  {otpSent ? "OTP Sent" : "Send OTP"}
-                </Button> */}
+                
               </div>
             </div>
           </div>
